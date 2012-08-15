@@ -35,8 +35,6 @@
 #   3. Is the driver loaded?
 #   4. If not, attempt an insmod of the driver.
 #   5. If the driver is still not loaded, fail.
-#   5a.Once we are sure driver is loaded, be sure to arrange for
-#      alt_fail_open if it has been requested (see 5a for details)
 #   6. Is the PortServer registered in the "proc" configuration files?
 #   7. If not, attempt to add the node.
 #   8. If the node is still not registered, fail.
@@ -169,7 +167,6 @@ test_perms() {
 
 DGRP_DAEMON=/usr/bin/dgrp/daemon/drpd
 DGRP_MK_SPECS=/usr/bin/dgrp/config/dgrp_mk_specs
-DGRP_ALTFAILOPEN=/usr/bin/dgrp/config/alt_fail_open
 
 test_perms $DGRP_DAEMON f
 test_perms $DGRP_DAEMON x
@@ -475,25 +472,6 @@ EOF
 			exit 1
 		fi
 	fi
-
-	#
-	#  5a. Once we are sure that the driver is loaded, be sure to
-	#      arrange for alt_fail_open if it has been requested
-	#
-	#  Some Linux kernels (for instance, the stock RedHat 7.1 kernel)
-	#  have a patch in the serial driver subsystem which changes the
-	#  expected behavior of device drivers when an open of a device
-	#  fails.  This "alternate behavior for failed opens" will be
-	#  enabled by this script if the following file is placed in the
-	#  file system:
-	#
-	#    ${DGRP_ALTFAILOPEN}
-	#
-	#  The driver ignores this request for kernels older than the 2.4
-	#  series.
-	#
-	[ -f ${DGRP_ALTFAILOPEN} ] && \
-		echo "alt_fail_open=1" > ${DGRP_PROCINFO}
 
 	#
 	#  6. Is this ID registered in "proc"?
