@@ -234,11 +234,11 @@ StartCurses(void)
 	keypad (stdscr, TRUE);
 	start_color ();
 
-	if ((int)(tigetstr ("smul")) > 0)
+	if (tigetstr("smul"))
 		HasAttr |= A_UNDERLINE;
-	if ((int)(tigetstr ("rev")) > 0)
+	if (tigetstr ("rev"))
 		HasAttr |= A_REVERSE;
-	if ((int)(tigetstr ("bold")) > 0)
+	if (tigetstr ("bold"))
 		HasAttr |= A_BOLD;
 
 	KEY_LINE = (LINES >= 24) ? LINES - 1 : 23;
