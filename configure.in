@@ -780,7 +780,7 @@ fi
 FULLPACKAGE=FULLPACKAGE
 AC_SUBST([FULLPACKAGE])
 
-AC_OUTPUT(Makefile driver/build/Makefile daemon/Makefile ditty/Makefile config/Makefile dparp/os/Makefile.Linux dgipserv/Makefile.linux dgelreset/Makefile.linux init/dgrp_udev init/Makefile, [[
+AC_OUTPUT(Makefile daemon/Makefile ditty/Makefile config/Makefile dparp/os/Makefile.Linux dgipserv/Makefile.linux dgelreset/Makefile.linux init/dgrp_udev init/Makefile, [[
 # a hook for preserving undef directive in config.h
 mv commoninc/config.h conftest
 sed -e 's@^\(.*\)defin.\( .*\) .*/\*\(.*KEEP_UNDEF_HERE\)@\1undef\2     /\*\3@' < conftest > commoninc/config.h

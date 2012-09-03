@@ -131,14 +131,3 @@ uninstall:
 	-rm -r $(RPM_BUILD_ROOT)/usr/bin/dpa.dgrp
 
 
-# Target to get all sources pushed into 1 directory for
-# pushing off to the kernel sources list.
-for_kernel:
-	rm -rf kernel
-	mkdir -p kernel
-	cp driver/build/*.c kernel
-	cp driver/build/include/*.h kernel
-	cp commoninc/digirp.h kernel
-	cp Makefile.kernel kernel/Makefile
-	cat kernel/Makefile | sed "s/TRUE_VERSION/$(TRUE_VERSION)/g" > kernel/Makefile.out
-	mv kernel/Makefile.out kernel/Makefile
