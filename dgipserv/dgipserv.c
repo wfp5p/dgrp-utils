@@ -212,6 +212,7 @@ int main(int argc, char *argv[])
   int pktlen;                    /* size of the packet we send back */
   char *str_hwaddr=NULL;         /* hardware address from the command line */
   char *str_ipaddr=NULL;         /* IP address from the command line */
+  char *s;
   HWADDR hwaddr;                 /* str_hwaddr, parsed */
   HWADDR reply_hwaddr;           /* hw addr to reply to */
   IPADDR ipaddr;                 /* str_ipaddr, parsed */
@@ -716,9 +717,9 @@ int main(int argc, char *argv[])
    * Make sure the HW address is kosher.
    */
   /* Replace dashes with colons--otherwise sscanf() pukes. */
-  for (j=0; j<strlen(str_hwaddr); j++)
-    if (str_hwaddr[j]=='-')
-      str_hwaddr[j]=':';
+  while ((s = strchr(str_hwaddr, '-')))
+	  s[0] = ':';
+
   if (str2hwaddr(str_hwaddr, hwaddr)<0) {
     printf("Bad hardware address: \"%s\"\n", str_hwaddr);
     printf("A hardware address should be a six-byte value "
