@@ -8,11 +8,6 @@
  ************************************************************************/
 
 
-/* Export the SSL license as the first searchable text */
-#include "ssl_license.h"
-
-char ssl_license[] = SSL_LICENSE;
-
 char copyright[] =
     "Copyright (c) 1998 Digi International.  All Rights Reserved.";
 
