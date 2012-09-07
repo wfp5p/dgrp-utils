@@ -58,8 +58,7 @@ sindex(char *string, char *group)
 }
 
 
-char    *
-next_arg(char *str, char **new_ptr)
+char    *next_arg(char *str, char **new_ptr)
 {
 	char *ptr;
 
@@ -67,7 +66,7 @@ next_arg(char *str, char **new_ptr)
 		return NULL;
 
         /* Skip over all whitespace */
-        while (*str == ' ' && *str == '\t' && *str != '\0')
+        while (*str != ' ' && *str != '\t' && *str != '\0')
                 str++;
 
         if (*str == '\0')
@@ -76,7 +75,7 @@ next_arg(char *str, char **new_ptr)
 	ptr = str;
 
         while (*str != ' ' && *str != '\t' && *str != '\0')
-        	str++;
+		str++;
 
 	if (*str != '\0')
 		*str++ = '\0';
