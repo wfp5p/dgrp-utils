@@ -441,7 +441,7 @@ void decodeCommandLine(int argc, char **argv)
 	    goto usage;
 	}
     }
-	
+
     /*
      * There must be either 2 or 3 positional arguments.
      */
@@ -469,7 +469,7 @@ void decodeCommandLine(int argc, char **argv)
 
     if (ac >= 3 && decodeSpeed(argv[optind + 2]))
 	goto usage;
-	
+
     return;
 
     /*
@@ -491,7 +491,7 @@ void decodeCommandLine(int argc, char **argv)
 void msg_cb(int write_p, int version, int content_type, const void *buf, size_t len, SSL *ssl, void *arg)
 	{
 	const char *str_write_p, *str_version, *str_content_type = "", *str_details1 = "", *str_details2= "";
-	
+
 	str_write_p = write_p ? ">>>" : "<<<";
 
 	switch (version)
@@ -523,7 +523,7 @@ void msg_cb(int write_p, int version, int content_type, const void *buf, size_t 
 					if (len >= 3)
 						{
 						unsigned err = (((unsigned char*)buf)[1]<<8) + ((unsigned char*)buf)[2];
-						
+
 						switch (err)
 							{
 						case 0x0001:
@@ -588,7 +588,7 @@ void msg_cb(int write_p, int version, int content_type, const void *buf, size_t 
 		if (content_type == 21) /* Alert */
 			{
 			str_details1 = ", ???";
-			
+
 			if (len == 2)
 				{
 				switch (((unsigned char*)buf)[0])
@@ -676,7 +676,7 @@ void msg_cb(int write_p, int version, int content_type, const void *buf, size_t 
 					}
 				}
 			}
-		
+
 		if (content_type == 22) /* Handshake */
 			{
 			str_details1 = "???";
@@ -726,7 +726,7 @@ void msg_cb(int write_p, int version, int content_type, const void *buf, size_t 
 	if (len > 0)
 		{
 		size_t num, i;
-		
+
 		fprintf(stderr, "   ");
 		num = len;
 
@@ -885,7 +885,7 @@ int seed_prng(int bytes)
 	return 0;
 }
 
-	
+
 
 /************************************************************************
  * Copies data from the Network Device to the TCP connection and data
@@ -1004,7 +1004,7 @@ void copyData()
                     fprintf(stderr, "SSL_connect fatal error. (%d:%d) (%s)\nclosing socket\n",
 		        err, err2, ptr);
 		shutdown(serverFD, 2);
-		return;	
+		return;
 
 	    case SSL_ERROR_ZERO_RETURN:
 		syslog(LOGPRI, "SSL_connect fatal error. Connection closed.  Sleeping 10 seconds and then will retry again\n");
@@ -1043,7 +1043,7 @@ void copyData()
 			fprintf(stderr, "ERROR: Peer certificate: %p\n",
 			    X509_verify_cert_error_string(err));
 			shutdown(serverFD, 2);
-			return;	
+			return;
 		}
 	}
 
@@ -1444,33 +1444,33 @@ void mainLoop()
 	}
 	else {
 
-            /*      
+            /*
              * Lookup server hostname or IP address.
              */
-                 
+
             bzero((char *)&sin, sizeof(sin));
 
             sin.sin_addr.s_addr = inet_addr(serverName);
-        
+
             if (sin.sin_addr.s_addr == INADDR_NONE) {
                 hp = gethostbyname(serverName);
-            
+
                 if (hp == 0) {
                     if (message != 1) {
                         message = 1;
                         time(&msgtime);
-                
+
                         syslog(LOGPRI, "%s Server host unknown - %s",
                             progName, errorString());
                     }
-        
+
                     sleep(10);
                     continue;
                 }
 
                 bcopy(hp->h_addr, &sin.sin_addr, hp->h_length);
                 sprintf(resolvedName, "%s", inet_ntoa(sin.sin_addr));
-            
+
                 if (debug >= 1) {
                     fprintf(stderr, "Resolved hostname: %s\n", serverName);
                 }
@@ -1481,12 +1481,12 @@ void mainLoop()
                 if (debug >= 1) {
                     fprintf(stderr, "Resolved ip: %s\n", serverName);
                 }
-            }   
+            }
 
             /*
 	     * Form the complete server address.
 	     */
-             
+
 	    sin.sin_family = AF_INET;
 
 	    if (secure)
@@ -1538,7 +1538,7 @@ void mainLoop()
 		       "%s Cannot connect to server - %m\n",
 		       progName);
 	    }
-		
+
 	    if (debug >= 1)
 	    {
 		if (secure)
@@ -1554,7 +1554,7 @@ void mainLoop()
 			serverPort,
 			errorString());
 	    }
-	    
+
 	    close(serverFD);
 
 	    if (secure) {
@@ -1577,7 +1577,7 @@ void mainLoop()
 	    syslog(LOGPRI,
 		   "%s Connected to %s Server\n", progName, (secure ? "Secure" : ""));
 	}
-	
+
 	if (debug >= 1)
 	    fprintf(stderr, "Connected to %s Server\n", (secure ? "Secure" : ""));
 
@@ -1637,13 +1637,13 @@ void mainLoop()
 int main(int argc, char **argv)
 {
     char device[100];
-    
+
     /*
      * Decode the command line.
      */
 
     sprintf(progName, "%s:", argv[0]);
-    
+
     decodeCommandLine(argc, argv);
 
     sprintf(progName, "drpd(%s,%s)", nodeName, serverName);
@@ -1664,7 +1664,7 @@ int main(int argc, char **argv)
 	syslog(LOGPRI,
 	       "%s Cannot open %s - %m\n",
 	       progName, device);
-	       
+
 	if (debug >= 1)
 	{
 	    fprintf(stderr,

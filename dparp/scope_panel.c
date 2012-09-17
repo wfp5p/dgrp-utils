@@ -1,5 +1,5 @@
 /*
- * Copyright 2005 Digi International (www.digi.com)   
+ * Copyright 2005 Digi International (www.digi.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -169,7 +169,7 @@ int handle_dpa_read(struct deviceinfo *unit)
 *
 **********************************************************************/
 
-int 
+int
 handle_scope (struct deviceinfo *unit, struct digi_node *node, struct digi_chan *chan, int port)
 {
 	int i = 0, j = 0, option = EOF;
@@ -190,7 +190,7 @@ handle_scope (struct deviceinfo *unit, struct digi_node *node, struct digi_chan 
    int hex_column = 0;
    int ascii_column = 0;
 
-	CAPTURE_BUFFER *curbuf;	
+	CAPTURE_BUFFER *curbuf;
 
 	WINDOW *scopewin = GetWin(ScopeWin);
 
@@ -211,7 +211,7 @@ handle_scope (struct deviceinfo *unit, struct digi_node *node, struct digi_chan 
 
 	rd_on = wr_on = 1;
 	rd_lines = ((disp_lines - 1) / 2) + ((disp_lines - 1) % 2);
-	
+
 	hex_column = 6;
 	ascii_column = GetWidth(ScopeWin) - 22;
 
@@ -317,7 +317,7 @@ handle_scope (struct deviceinfo *unit, struct digi_node *node, struct digi_chan 
 					show_lines = rd_on ? disp_lines - rd_lines - 1 : disp_lines;
 					bytes_on_screen = show_lines * 16;
 				}
-	
+
 				if (((curbuf->head - curbuf->tail - 1) & curbuf->mask) != 0)
 				{
 					truncated = 1;
@@ -332,22 +332,22 @@ handle_scope (struct deviceinfo *unit, struct digi_node *node, struct digi_chan 
 
 				if (truncated && (end_line < start_line))
 					start_line = 0;
-				
+
 				calc_bpos = start_line * 16;
-	
+
 				for (i=0; i <= (end_line - start_line); i++)
 				{
 					for (j=0; j < 16; j++)
 					{
 						unsigned char currch = 0;
-	
+
 						if (truncated && ((unsigned)calc_bpos > curbuf->tail))
 							continue;
-	
+
 						if ((unsigned)calc_bpos == curbuf->tail)
 						{
 							wattrset (scopewin, make_attr (A_REVERSE | A_STANDOUT, GREEN, BLACK));
-	
+
 							mvwprintw (scopewin, screen_pos + i,
 							           hex_column + (j * 3), "__", currch);
 							mvwprintw (scopewin, screen_pos + i,
@@ -357,7 +357,7 @@ handle_scope (struct deviceinfo *unit, struct digi_node *node, struct digi_chan 
 						{
 							wattrset (scopewin, make_attr (A_NORMAL, GREEN, BLACK));
 							currch = curbuf->buf[calc_bpos];
-	
+
 							mvwprintw (scopewin, screen_pos + i,
 							           hex_column + (j * 3), "%02X", currch);
 							if (isprint (currch))
@@ -367,7 +367,7 @@ handle_scope (struct deviceinfo *unit, struct digi_node *node, struct digi_chan 
 								mvwprintw (scopewin, screen_pos + i,
 								           ascii_column + j, ".", currch);
 						}
-	
+
 						calc_bpos = (calc_bpos + 1) & curbuf->mask;
 					}
 				}
@@ -469,7 +469,7 @@ handle_scope (struct deviceinfo *unit, struct digi_node *node, struct digi_chan 
 		{
 			fprintf (stderr, "FATAL ERROR: select failure.\n");
 			EndCurses (-13);
-			/* FIXME: This code will not be executed as 
+			/* FIXME: This code will not be executed as
 			   EndCurses() calls exit(). */
 			exit (-2);
 		}
@@ -492,8 +492,8 @@ handle_scope (struct deviceinfo *unit, struct digi_node *node, struct digi_chan 
 
 
 		/*
-		 * If the user hasn't selected anything keep doing the 
-		 * original screen. 
+		 * If the user hasn't selected anything keep doing the
+		 * original screen.
 		 */
 
 		switch (option)
@@ -533,14 +533,14 @@ handle_scope (struct deviceinfo *unit, struct digi_node *node, struct digi_chan 
 			if (!(wr_on && rd_on)) break;
 
 			if( rd_lines < (disp_lines - 2) ) rd_lines++;
-		
+
 			break;
 
 		case '-':
 			if (!(wr_on && rd_on)) break;
 
 			if( rd_lines > 1 ) rd_lines--;
-		
+
 			break;
 
 #ifdef KEY_PRINT

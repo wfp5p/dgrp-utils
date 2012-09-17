@@ -1,5 +1,5 @@
 /*
- * Copyright 2005 Digi International (www.digi.com)   
+ * Copyright 2005 Digi International (www.digi.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@
 *
 **********************************************************************/
 
-void 
+void
 print_identify(void)
 {
 	int i;
@@ -122,13 +122,13 @@ print_identify(void)
 	wattrset (GetWin(IdentWin), make_attr (A_BOLD, WHITE, BLUE));
 	mvwprintw (GetWin(IdentWin), 1, BORDER_WIDTH, full_line);
 
-	mvwprintw (GetWin(IdentWin), 1, BORDER_WIDTH + 
+	mvwprintw (GetWin(IdentWin), 1, BORDER_WIDTH +
 	           INDEX_WIDTH + COLUMN_SPACE, "Device ID" );
-	mvwprintw (GetWin(IdentWin), 1, BORDER_WIDTH + 
+	mvwprintw (GetWin(IdentWin), 1, BORDER_WIDTH +
 	           INDEX_WIDTH + COLUMN_SPACE + DEVICEID_WIDTH + COLUMN_SPACE,
 		   "IP Address/Host" );
-	mvwprintw (GetWin(IdentWin), 1, BORDER_WIDTH + 
-	           INDEX_WIDTH + COLUMN_SPACE + DEVICEID_WIDTH + 
+	mvwprintw (GetWin(IdentWin), 1, BORDER_WIDTH +
+	           INDEX_WIDTH + COLUMN_SPACE + DEVICEID_WIDTH +
 		   COLUMN_SPACE + IPADDR_WIDTH + COLUMN_SPACE,
 	           "Ports         Status  ");
 
@@ -163,7 +163,7 @@ print_identify(void)
 		if (num_devices == 0)
 		{
 			EndCurses (-6);
-			/* FIXME: This code will not be executed as 
+			/* FIXME: This code will not be executed as
 			   EndCurses() calls exit(). */
 			fprintf (stderr, "No devices listed in configuration file.\n");
 			exit (-2);
@@ -210,7 +210,7 @@ print_identify(void)
 			else
 				state_str = "Down";
 
-			sprintf( full_line, line_template, i + 1, 
+			sprintf( full_line, line_template, i + 1,
 			         device_info[i].devname,
 			         device_info[i].host,
 			         device_info[i].nports,
@@ -224,7 +224,7 @@ print_identify(void)
 
 		if (first)
 			wrefresh (GetWin(MainWin));
-		
+
 		first = FALSE;
 
 		wattrset (GetWin(IdentWin), make_attr (A_NORMAL, WHITE, BLACK));
@@ -243,7 +243,7 @@ print_identify(void)
 			if( debug )
 				fprintf (dfp, "Select failure, errno: %d\n", errno);
 			EndCurses (-12);
-			/* FIXME: This code will not be executed as 
+			/* FIXME: This code will not be executed as
 			   EndCurses() calls exit(). */
 			exit (-2);
 		}

@@ -33,7 +33,7 @@ struct io_buf {
 };
 
 /*
- *	This program freely uses global vars - I don't intend for 
+ *	This program freely uses global vars - I don't intend for
  *	this utility to get very big so it shouldn't be too tricky
  *	to maintain, globals and all.
  */
@@ -90,7 +90,7 @@ char			 tmp_file[40];
 #define MAX_BAUD_RATE 460800
 #endif
 
-/* 
+/*
  * Unix baudrate codes and associated information
  */
 struct {
@@ -265,31 +265,31 @@ int main(int argc, char **argv) {
 	int			 stat;
 	int			 i;
 	int			 speed;
-  
+
 	progname = "dinc";
-  
+
 	if(argc < 2)
 		usage();
-  
+
 	/* process options */
 	while((c = getopt(argc,argv,"hs125678ENOiecrlfCRLF")) != EOF) {
 		switch(c) {
 		case 'h':				/* hardware flow control */
 			hwfc = TRUE;
 			break;
-			
+
 		case 's':				/* software flow control _off_ */
 			swfc = FALSE;
 			break;
-			
+
 		case '1':				/* one stop bit */
 			cstopb = FALSE;
 			break;
-			
+
 		case '2':				/* two stop bits */
 			cstopb = TRUE;
 			break;
-			
+
 		case '5':				/* 5-bit chars */
 			csize = 5;
 			break;
@@ -297,26 +297,26 @@ int main(int argc, char **argv) {
 		case '6':				/* 6-bit chars */
 			csize = 6;
 			break;
-				
+
 		case '7':				/* 7 bit chararacters */
 			csize = 7;
 			break;
-			
+
 		case '8':				/* 8 bit characters */
 			break;
-			
+
 		case 'E':				/* even parity */
 			parity = 2;
 			break;
-			
+
 		case 'N':				/* no parity */
-			parity = 0;	
+			parity = 0;
 			break;
-			
+
 		case 'O':				/* off parity */
 			parity = 1;
 			break;
-			
+
 		case 'i':				/* don't init the port */
 			init_port = FALSE;
 			break;
@@ -347,12 +347,12 @@ int main(int argc, char **argv) {
 		case 'F':   /* Strip LF on CRLF on outgoing. */
 			strip_lf_out = !strip_lf_out;
 			break;
-			
+
 		case '?':
 			usage();
 		}
 	}
-	
+
 	/* examine rest of args expecting port and possibly baud rate */
 	for( ; optind != argc; optind++) {
 		/* if first char is numeric, assume it's a baud rate */
@@ -362,30 +362,30 @@ int main(int argc, char **argv) {
 		else
 			strcpy(tty_name, argv[optind]);
 	}
-	
+
 	/* make sure we got a port spec */
 	if(tty_name[0] == 0) {
 		printf("No port specified.\n");
 		usage();
 	}
-	
+
 	/* open the TTY port */
 	open_tty();
-	
+
 	/* see if we can gain ownership */
 	lock_tty();
 
 	if(set_baud_exten(0) == OK)
 		baud_exten_supported = TRUE;
-	
+
 	if(init_port == TRUE) {
 		/* setup  line characteristics at tty port */
-		if(set_tty_params() != OK) 
+		if(set_tty_params() != OK)
 			usage();
-		
+
 		/* make sure modem signals are active */
 		set_modem();
-		
+
 	}
 	else {
 		stat = tcgetattr(tty_fd,&tty_termios);		/* find current speed */
@@ -402,26 +402,26 @@ int main(int argc, char **argv) {
 				break;
 			}
 		}
-		
-		if(tty_termios.c_iflag & (IXON | IXOFF)) 
+
+		if(tty_termios.c_iflag & (IXON | IXOFF))
 			swfc=TRUE;
 		else
 			swfc=FALSE;
-		
-		if(is_hwfc()) 
+
+		if(is_hwfc())
 			hwfc=TRUE;
 		else
 			hwfc=FALSE;
-		
+
 	}
-	
+
 	/* setup line characteristics at user port */
 	save_user_params();
 	set_user_params();
-	
+
 	/* sign on */
 	sign_on();
-	
+
 	/* start main loop */
 	loop();
 	/* never returns */
@@ -436,17 +436,17 @@ void loop() {
 	fd_set			 rfdv, wfdv;
 	int				 stat;
 	int				 max_fd;
-	
+
 	/* catch obvious signals */
 	signal(SIGINT, bail);
 	signal(SIGHUP, bail);
 	signal(SIGTERM, bail);
 	signal(SIGALRM, bail);
 
-	max_fd = MAX(STDIN_FILENO, 
+	max_fd = MAX(STDIN_FILENO,
 				 MAX(STDOUT_FILENO,
 					 MAX(STDERR_FILENO, tty_fd))) + 1;
-	
+
 	/* main loop */
 	while(1) {
 		/* see what we're doing this time */
@@ -459,24 +459,24 @@ void loop() {
 			FD_SET(STDOUT_FILENO,&wfdv);	/* write stdout */
 		if(t_out.cnt != 0)
 			FD_SET(tty_fd,&wfdv);			/* write TTY */
-		
+
 		tv.tv_sec = 1;						/* one sec poll for life */
 		tv.tv_usec = 0;						/* reset each time for Linux */
-  
+
 		/* watch for activity */
 		stat = select(max_fd,&rfdv,&wfdv,NULL, &tv);
 		if(stat < 0) {
 			perror("select failed");
 			bail(1);
 		}
-		
+
 		/* see if we just timed out */
 		if(stat == 0) {
 			/* poll modem status just as a way to see if we're still online */
 			(void) get_modem();
 			continue;
 		}
-		
+
 		/* check user input */
 		if(FD_ISSET(STDIN_FILENO,&rfdv)) {
 			stat = read(STDIN_FILENO,u_in.d,ISZ);
@@ -488,7 +488,7 @@ void loop() {
 			u_in.cnt = stat;
 			u_in.index = 0;
 		}
-		
+
 		/* check user output */
 		if(FD_ISSET(STDOUT_FILENO,&wfdv)) {
 			stat = write(STDOUT_FILENO, &u_out.d[u_out.index], u_out.cnt - u_out.index);
@@ -496,47 +496,47 @@ void loop() {
 				perror("write to user output failed");
 				bail(1);
 			}
-			
+
 			/* update buf for amount written */
 			u_out.index += stat;
-			
+
 			/* see if we emptied the buf */
-			if(u_out.index == u_out.cnt) 
+			if(u_out.index == u_out.cnt)
 				u_out.index = u_out.cnt = 0;
 		}
-		
+
 		/* check TTY input */
 		if(FD_ISSET(tty_fd,&rfdv)) {
 			stat = read(tty_fd, t_in.d, ISZ);
-			if(stat < 0) 
+			if(stat < 0)
 				bail(1);
 			/*
 			 * if we read 0 in spite of select saying we got chars,
 			 * we're probably offline.
 			 */
-			if(stat == 0) 
+			if(stat == 0)
 				bail(1);
-			
+
 			/* show we have chars to process */
 			t_in.cnt = stat;
 			t_in.index = 0;
 		}
-		
+
 		/* check TTY out */
 		if(FD_ISSET(tty_fd, &wfdv)) {
 			stat = write(tty_fd, &t_out.d[t_out.index],
 						 t_out.cnt - t_out.index);
-			
+
 			/* an error usually would mean the line hung up */
-			if(stat < 0) 
+			if(stat < 0)
 				bail(1);
-			
+
 			/* show we moved some chars */
 			t_out.index += stat;
 			if(t_out.index == t_out.cnt)
 				t_out.index = t_out.cnt = 0;
 		}
-		
+
 		/* try to move data between in and out buf pairs */
 		if(t_in.cnt != 0 && u_out.cnt == 0) {
 			u_out.cnt = move(u_out.d, t_in.d, t_in.cnt, add_cr_in, add_lf_in, strip_cr_in, strip_lf_in);
@@ -548,7 +548,7 @@ void loop() {
 
 /*
  *	move()
- *	
+ *
  *	Saves having to keep track of bcopy vs. memcpy.
  *	Also handles CRLF translations.
  */
@@ -598,11 +598,11 @@ int move(char *dst, char *src, int n, int add_cr, int add_lf, int strip_cr, int 
  */
 void proc_user_input() {
 	int c;
-	
+
 	/* make sure we have something to do */
 	if(u_in.cnt == 0)
 		return;
-	
+
 	/* copy to TTY out buf checking for special commands */
 	while(u_in.index != u_in.cnt) {
 		c = u_in.d[u_in.index++];
@@ -613,12 +613,12 @@ void proc_user_input() {
 
 /*
  *	proc_user_char()
- *	
+ *
  *	Handle tilde commands.  Regular chars just get moved to out buf.
  */
 void proc_user_char(int c) {
 	static int	 state = UC_CR;
-	
+
 	switch(state) {
 	case UC_IDLE:							/* no special state */
 		/* see what char we got */
@@ -680,9 +680,9 @@ void proc_user_char(int c) {
  */
 int proc_tilde_cmd(int c) {
 	int stat;
-	
+
 	static char *cmds = "\r\nDINC tilde cmds:\n\r (+-)Baud Csize Dtr Framing Hwfc Info breaK Modem Oflush Parity Rts Swfc eXit\n\r";
-	
+
 	switch(tolower(c)) {
 	case '.':							/* exit */
 	case 'q':
@@ -750,7 +750,7 @@ int proc_tilde_cmd(int c) {
 	case 'k':							/* send break */
 #ifdef OPENBSD
 		stat = ioctl(tty_fd,TIOCSBRK,0);
-		if(stat < 0) 
+		if(stat < 0)
 			perror("TIOCSBRK");
 #else
 		stat=tcsendbreak(tty_fd, 0);
@@ -758,11 +758,11 @@ int proc_tilde_cmd(int c) {
 		  perror("tcsendbreak");
 #endif
 		break;
-		
+
 	case 'o':							/* output flush */
 		/* clear our own little output buffer */
 		t_out.index = t_out.cnt = 0;
-		
+
 		/* clear out down thru line discipline, etc. */
 		stat = tcflush(tty_fd,TCOFLUSH);
 		if(stat < 0)
@@ -801,7 +801,7 @@ void tout_putc(int c) {
 
 /*
  *	open_tty()
- *	
+ *
  *	Opens the TTY port non-blocking style.  Runs a watchdog timer
  *	in case another process is blocking for carrier preventing us
  *	from proceeding with open.
@@ -811,10 +811,10 @@ void tout_putc(int c) {
 void open_tty() {
 	/* set signal handler for open watchdog */
 	signal(SIGALRM, tty_open_timeout);
-	
+
 	/* set watchdog timer */
 	alarm(10);
-	
+
 	/* open the tty port */
 	tty_fd = open(tty_name,O_RDWR | O_NDELAY);
 	if(tty_fd < 0) {
@@ -822,13 +822,13 @@ void open_tty() {
         alarm(0);			/* be pendantic about clearing the timer */
 		exit(1);
 	}
-	
+
 	/* clear the timer */
 	alarm(0);
-	
+
 	/* go back to default alarm handler */
 	signal(SIGALRM, SIG_DFL);
-	
+
 	/* restore normal blocking operation on port */
 	fcntl(tty_fd, F_SETFL, 0);
 }
@@ -847,7 +847,7 @@ void tty_open_timeout(int arg) {
 
 /*
  *	lock_tty()
- *	
+ *
  *	Does uucp-style locking protocol to keep multiple dialouts
  *	from accessing the same port.  Simply exits if errors encountered
  *	or if port is busy.
@@ -856,23 +856,23 @@ void lock_tty() {
 #if defined(NO_UULOCKING)
 	return;
 #else
-	
+
 	int		 pid;
 	char 	*p;
-	
+
 	/* build appropriate name for lockfile */
-	
+
 #if defined(SOLARIS)
 	/* do SVR4 flavor */
 	struct stat s;
-	
+
 	/* fetch info on device */
 	if(stat(tty_name, &s) < 0) {
 		perror(tty_name);
 		fprintf(stderr,"Couldn't stat device node.\n");
 		exit(1);
 	}
-	
+
 	/* form full file spec */
 	sprintf(lock_file,"%s/LK.%3.3lu.%3.3lu.%3.3lu",
 			LOCK_DIR,
@@ -883,57 +883,57 @@ void lock_tty() {
 	/* do BSD */
 	strcpy(lock_file,LOCK_DIR);
 	strcat(lock_file,"/LCK..");
-	
+
 	/* strip basename off */
 	if((p = strrchr(tty_name,'/')) == NULL)
 		strcpy(lock_file,tty_name);
-	else 
-		strcat(lock_file, p + 1);	
+	else
+		strcat(lock_file, p + 1);
 #endif
-	
+
 	/*
 	 * now create a temp file and attempt to atomically link the
      * lock name to our temp file.
      */
 	while(create_tmp_proc_id(), link(tmp_file, lock_file) < 0) {
-		
+
 		/* clean up the temp file */
 		unlink(tmp_file);
-		
+
 		/* see if lockfile already in existance */
 		if(errno != EEXIST) {
 			perror(lock_file);
 			fprintf(stderr,"Couldn't link lockfile name.\n");
 			exit(1);
 		}
-		
+
 		/* lockfile already exists, find which process owns it */
 		pid = read_lock_proc_id(lock_file);
-		
+
 		/* check for suddenly ceased to exist */
-		if(pid < 0) 
+		if(pid < 0)
 			continue;
-		
+
 		/* check for reasonable process ID */
 		if(pid < 5) {
 			fprintf(stderr,"Line locked with dubious format lockfile '%s'.\n",
 					lock_file);
 			exit(1);
 		}
-		
+
 		/* see if live process exists w/ that ID */
 		if(kill(pid, 0) == 0) {
 			fprintf(stderr,"%s: already in use.\n", tty_name);
 			exit(1);
 		}
-		
+
 		/*
 		 *  either process _just_ finished or we have orphan lock file.
 		 *  see if lockfile still exists w/ same pid in it.
 		 */
-		if(read_lock_proc_id(lock_file) != pid) 
+		if(read_lock_proc_id(lock_file) != pid)
 			continue;
-		
+
 		/*
 		 *  we assume now it's an orphan and we remove it.  there are
 		 *  all sorts of possible race conditions here, but we'll
@@ -947,12 +947,12 @@ void lock_tty() {
 					lock_file);
 			exit(1);
 		}
-		
+
 		/* now we try again */
 	}
-	
+
 	/* made it to here, we have a lockfile with proper name */
-	
+
 	/* clean temp and we're done */
 	unlink(tmp_file);
 #endif	/* !NO_UULOCKING */
@@ -973,19 +973,19 @@ void unlock_tty() {
 
 /*
  *	read_lock_proc_id()
- *	
+ *
  *	Attempts to read a 10 digit process ID from the spec'd lockfile.
  *
  *	Returns:
  *		>= 0 valid process ID
  *		-1   general error accessing file
- *	
+ *
  *	Exits if we don't have permission to read the file.
  */
 int read_lock_proc_id(char *name) {
 	int		 lfd,ret;
 	char	 proc_id[12];
-	
+
 	/* try to open the lockfile */
 	lfd = open(name, O_RDONLY);
 	if(lfd < 0) {
@@ -996,16 +996,16 @@ int read_lock_proc_id(char *name) {
 		}
 		return(-1);
 	}
-	
+
 	/* try to read a process ID */
 	ret = read(lfd, proc_id, sizeof(proc_id) - 1);
 	if(ret < 0)
 		return(-1);
 	close(lfd);
-	
+
 	/* null terminate proc ID string */
 	proc_id[ret] = 0;
-	
+
 	/* and return the numberic value */
 	return(atoi(proc_id));
 }
@@ -1021,7 +1021,7 @@ int read_lock_proc_id(char *name) {
 void create_tmp_proc_id() {
 	char	 proc_id[12];
 	int		 tmp_fd;
-	
+
 	/* now create a temp file */
 	sprintf(tmp_file,"%s/DINCTMP%d", LOCK_DIR, getpid());
 	tmp_fd = creat(tmp_file, 0444);
@@ -1030,7 +1030,7 @@ void create_tmp_proc_id() {
 		fprintf(stderr,"Couldn't create temp file.\n");
 		exit(1);
 	}
-	
+
 	/* write our process ID to the file */
 	sprintf(proc_id,"%10d\n",getpid());
 	if(write(tmp_fd, proc_id, strlen(proc_id)) < (int) strlen(proc_id)) {
@@ -1054,7 +1054,7 @@ void create_tmp_proc_id() {
 int set_tty_params() {
 	int		 stat,i;
 	int		 code,ext;
-	
+
 	/* lookup baud code and baud extension factor */
 	for(i = 0; baudtab[i].rate; i++) {
 		if(baudrate == baudtab[i].rate) {
@@ -1063,39 +1063,39 @@ int set_tty_params() {
 			break;
 		}
 	}
-	
+
 	/* make sure we found a match */
 	if(baudtab[i].rate == 0) {
 		printf("Can't set baudrate %d\n", baudrate);
 		return(!OK);
 	}
-	
+
 	/* see if extended baud rates supported */
 	if(baud_exten_supported == TRUE) {
 		stat = set_baud_exten(ext);
-		if(stat != OK) 
+		if(stat != OK)
 			return(!OK);
 	}
-	
+
 	/* get the regular part of the attributes */
 	stat = tcgetattr(tty_fd,&tty_termios);
 	if(stat < 0) {
 		perror("set_tty_params: tcgetattr");
 		bail(1);
 	}
-	
+
 	/* set line up for raw mode operation */
 	tty_termios.c_lflag = 0;
 	tty_termios.c_oflag &= ~OPOST;
 #ifdef ONLCR
 	tty_termios.c_oflag &= ~ONLCR;
 #endif
-	tty_termios.c_iflag &= 
+	tty_termios.c_iflag &=
 		~(INPCK | PARMRK | BRKINT | INLCR | ICRNL | IUCLC | IXANY );
 	tty_termios.c_iflag |= IGNBRK;
 	tty_termios.c_cflag &= ~(CSIZE | PARODD | PARENB | CSTOPB);
 	tty_termios.c_cflag |= (CREAD | CLOCAL | HUPCL);
-	
+
 	/* set character size */
 	switch (csize) {
 	case 8:
@@ -1111,7 +1111,7 @@ int set_tty_params() {
 		tty_termios.c_cflag |= CS5;
 		break;
 	}
-	
+
 	/* set parity mode */
 	if(parity == 1) {
 		tty_termios.c_cflag |= (PARODD | PARENB);
@@ -1121,23 +1121,23 @@ int set_tty_params() {
 		tty_termios.c_cflag |= PARENB;
 		tty_termios.c_iflag |= INPCK;
 	}
-	
+
 	/* set software flow control mode */
 	if(swfc)
 		tty_termios.c_iflag |= (IXON | IXOFF);
 	else
 		tty_termios.c_iflag &= ~(IXON | IXOFF);
-	
+
 	/* set hardware flow control mode */
 	if(hwfc)
 		set_hwfc();
 	else
 		clr_hwfc();
-	
+
 	/* set framing */
 	if(cstopb)
 		tty_termios.c_cflag |= CSTOPB;
-	
+
 	/* set baud rate */
 #ifdef SCO6
 	if (baudrate < 57600) {
@@ -1152,9 +1152,9 @@ int set_tty_params() {
 	cfsetispeed(&tty_termios,code);
 #endif
 	/* set for non-blocking behavior */
-	tty_termios.c_cc[VMIN] = 
+	tty_termios.c_cc[VMIN] =
 		tty_termios.c_cc[VTIME] = 1;
-	
+
 	/* set the new attributes */
 	stat = tcsetattr(tty_fd, TCSANOW, &tty_termios);
 	if(stat < 0) {
@@ -1174,7 +1174,7 @@ int set_tty_params() {
 void show_tty_params() {
 	static char		*parnames[3] = {"NONE","ODD ","EVEN"};
 	char			 tbuf[80];
-	
+
 	sprintf(tbuf,"\r%6d BAUD %d %s %s SWFC=%s HWFC=%s           \r\n",
 			baudrate,
 			csize,
@@ -1187,14 +1187,14 @@ void show_tty_params() {
 
 /*
  *	underscore()
- *	
+ *
  *	Used to underscores most recently changed TTY param.
  */
 void underscore(int c) {
 	int		 len,i,b;
 	int		 lead,mark;
 	char	 tbuf[80];
-	
+
 	switch(tolower(c)) {
 	case 'b':					/* underscore the baud rate */
 	case '-':
@@ -1207,38 +1207,38 @@ void underscore(int c) {
 		lead = 6 - len;
 		mark = len + 5;
 		break;
-		
+
 	case 'c':					/* underscore the char size */
 		lead = 11;
 		mark = 3;
 		break;
-		
+
 	case 'f':					/* underscore framing */
 		lead = 18;
 		mark = 3;
 		break;
-		
+
 	case 'p':					/* underscore parity */
 		lead = 14;
 		mark = parity == 1 ? 3 : 4;
 		break;
-		
+
 	case 's':
 		lead = 21;
 		mark = swfc ? 7 : 8;
 		break;
-		
+
 	case 'h':
 		lead = 30;
 		mark = hwfc ? 7 : 8;
 		break;
-		
+
 	default:
 		printf("oops in underscore\n");
 		bail(1);
 		break;
 	}
-	
+
 	for(i = 0; i < lead; i++)
 		tbuf[i] = ' ';
 	for(b = 0; b < mark; b++, i++)
@@ -1253,13 +1253,13 @@ void underscore(int c) {
  *
  *	Steps to next baud rate. Arg is either 1 or -1 to denote
  *	which way we're stepping.
- *	
+ *
  *	Returns OK if able to set, else
  *	returns !OK.
  */
 int next_baud(int dir) {
 	int i;
-	
+
 	for(i = 0; baudtab[i].rate; i++)
 		if(baudrate == baudtab[i].rate)
 			break;
@@ -1272,19 +1272,19 @@ int next_baud(int dir) {
 
 	if(baudtab[i].rate == MAX_BAUD_RATE && !baud_exten_supported)
 		i = 0;
-	
+
 	baudrate = baudtab[i].rate;
 	return(set_tty_params());
 }
 
 /*
  *	save_user_params()
- *	
+ *
  *	Fetch current user terminal params and stash 'em away.
  */
 void save_user_params() {
 	int stat;
-	
+
 	stat = tcgetattr(STDOUT_FILENO,&user_save_termios);
 	if(stat < 0) {
 		perror("save_user_params: tcgetattr");
@@ -1300,20 +1300,20 @@ void save_user_params() {
  */
 void set_user_params() {
 	int stat;
-	
+
 	stat = tcgetattr(STDOUT_FILENO,&user_termios);
 	if(stat < 0) {
 		perror("set_user_params: tcgetattr");
 		bail(1);
 	}
-	
+
 	/* set line up for raw mode operation */
 	user_termios.c_lflag = 0;
 	user_termios.c_oflag &= ~OPOST;
 	user_termios.c_iflag &= ~(ICRNL | INLCR);
-	user_termios.c_cc[VMIN] = 
+	user_termios.c_cc[VMIN] =
 		user_termios.c_cc[VTIME] = 1;
-	
+
 	/* set the new attributes */
 	stat = tcsetattr(STDOUT_FILENO, TCSANOW, &user_termios);
 	if(stat < 0) {
@@ -1329,7 +1329,7 @@ void set_user_params() {
  */
 void restore_user_params() {
 	int stat;
-	
+
 	stat = tcsetattr(STDOUT_FILENO, TCSANOW, &user_save_termios);
 	if(stat < 0) {
 		perror("restore_user_params: tcsetattr");
@@ -1340,7 +1340,7 @@ void restore_user_params() {
 
 /*
  *	show_modem()
- *	
+ *
  *	Fetches and prints state of modem signals.
  */
 void show_modem() {
@@ -1349,16 +1349,16 @@ void show_modem() {
 	static int	 initd;
 	static int	 last_mdm;
 	int			 mdm_delta;
-	
+
 	mdmsigs = get_modem();
-	
+
 	sprintf(tbuf,"\rCAR=%s DTR=%s RTS=%s CTS=%s DSR=%s         \r\n",
 			mdmsigs & DINC_CAR ? "ON " : "OFF",
 			mdmsigs & DINC_DTR ? "ON " : "OFF",
 			mdmsigs & DINC_RTS ? "ON " : "OFF",
 			mdmsigs & DINC_CTS ? "ON " : "OFF",
 			mdmsigs & DINC_DSR ? "ON " : "OFF");
-	
+
 	/* if first call, don't show delta info */
 	if(!initd) {
 		initd = TRUE;
@@ -1381,7 +1381,7 @@ void show_modem() {
 		}
 		strcat(tbuf,"        \n\r");
 	}
-	
+
 	/* write finished modem status display */
 	write_string(STDOUT_FILENO,tbuf);
 }
@@ -1395,7 +1395,7 @@ void show_info() {
 	char	 tbuf[80];
 	char 	*dashes = "----------------------------------------";
 	int		 dcnt;
-	
+
 	write_string(STDOUT_FILENO,"\n\r");
 	sprintf(tbuf," DINC --- port=%s ",tty_name);
 	if((int) strlen(tbuf) < 40) {
@@ -1408,7 +1408,7 @@ void show_info() {
 	else
 		write_string(STDOUT_FILENO,tbuf);
 	write_string(STDOUT_FILENO,"\n\r");
-	
+
 	show_tty_params();
 	show_modem();
 }
@@ -1424,7 +1424,7 @@ void sign_on()
 
 /*
  *	write_string()
- *	
+ *
  *	Just a call to 'write' but expects a string instead buf buf/leng.
  */
 void write_string(int fd, char *s) {
@@ -1438,29 +1438,29 @@ void write_string(int fd, char *s) {
  */
 void bail(int code) {
 	static int	 called;
-	
+
 	if(called)					/* prevent recursive fails */
 		exit(1);
-	
+
 	called = TRUE;
-	
+
 	if(init_port == TRUE) {
 		/* clear baud extension factor if set */
 		if(baud_exten_supported == TRUE) {
 			set_baud_exten(0);
 		}
 	}
-	
+
 	/* if we locked the TTY, release it */
 	unlock_tty();
-	
+
 	/* if we changed user terminal params, restore */
 	if(user_setup_saved)  {
 		restore_user_params();
 		printf("DINC\007 closing...\n");
 	}
-	
-	if(init_port == TRUE) { 
+
+	if(init_port == TRUE) {
 		/* drop modem signals */
 		if(tty_fd > 0) {
 			tcflush(tty_fd, TCOFLUSH);
@@ -1468,7 +1468,7 @@ void bail(int code) {
 			set_modem();
 		}
 	}
-	
+
 	exit(code);
 }
 

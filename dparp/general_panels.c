@@ -1,5 +1,5 @@
 /*
- * Copyright 2005 Digi International (www.digi.com)   
+ * Copyright 2005 Digi International (www.digi.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ static void screen_print (DigiWin *, FILE *);
 *
 **********************************************************************/
 
-void 
+void
 release_number(void)
 {
 	char tmp[10];
@@ -211,7 +211,7 @@ AskYN (char *question)
 *
 **********************************************************************/
 
-void 
+void
 ShowMsg (char *err)
 {
 	int str_len = strlen (err);
@@ -278,9 +278,9 @@ ShowMsg (char *err)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
@@ -373,7 +373,7 @@ commandline (char *s, ...)
 	if ((spaces >= 2) || (one_option))
 	{
 		/*
-		 * check for possible equal leading and trailing spaces, if we were 
+		 * check for possible equal leading and trailing spaces, if we were
 		 * either one or 2 spaces short, take them from the beginning, and/or
 		 * the end of the line
 		 */
@@ -468,13 +468,13 @@ commandline (char *s, ...)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-void 
+void
 ShowCopyright(void)
 {
 	WINDOW *w = GetWin(CRWin);
@@ -513,13 +513,13 @@ ShowCopyright(void)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-static void 
+static void
 screen_print (DigiWin *dwin, FILE *fp)
 {
 	chtype c;
@@ -602,13 +602,13 @@ screen_print (DigiWin *dwin, FILE *fp)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-void 
+void
 screen_save (DigiWin *dwin, char *file)
 {
 	DigiWin *Dwps_win;
@@ -713,13 +713,13 @@ screen_save (DigiWin *dwin, char *file)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-void 
+void
 DisplayHeader(void)
 {
 	char msg[256];
@@ -750,13 +750,13 @@ DisplayHeader(void)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-void 
+void
 CreateWins(void)
 {
 	int total_width = COLS;
@@ -889,13 +889,13 @@ CreateWins(void)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-void 
+void
 DeleteWins(void)
 {
 	hide_panel (GetPan(HeadWin));

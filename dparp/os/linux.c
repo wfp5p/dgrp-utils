@@ -74,10 +74,10 @@ next_arg(char *str, char **new_ptr)
                 return NULL;
 
 	ptr = str;
-        
+
         while (*str != ' ' && *str != '\t' && *str != '\0')
         	str++;
-        
+
 	if (*str != '\0')
 		*str++ = '\0';
 
@@ -222,7 +222,7 @@ DPAFindDevices(void)
 **********************************************************************/
 
 char *
-DPAGetPortName(struct deviceinfo *device, struct digi_node *node, 
+DPAGetPortName(struct deviceinfo *device, struct digi_node *node,
 	    struct digi_chan *chan, int port, char *result)
 {
 	if (debug)
@@ -280,7 +280,7 @@ DPACloseDevice(struct deviceinfo *device)
 	return 0;
 }
 
-	
+
 
 /**********************************************************************
 *

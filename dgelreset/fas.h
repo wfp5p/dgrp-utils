@@ -1,7 +1,7 @@
 /*
  * fas.h - Defines used in the Fast ASync (FAS) protocol used by Digi
  *         International EtherLite(R) Terminal Server modules.
- * 
+ *
  *****************************************************************************
  *
  * Copyright 1999-2000 Digi International (www.digi.com)
@@ -24,7 +24,7 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  *****************************************************************************
- *  
+ *
  */
 
 #define FASCMDSZ		8
@@ -253,7 +253,7 @@ struct req_set_modem {
 #define FAS460800	0x2f
 #define FASNOBAUD	0xff
 
-typedef		
+typedef
 struct req_set_params {
 	uns8 opcode;
 	uns8 line;
@@ -443,12 +443,12 @@ typedef
 struct rsp_line_inquiry {
 	uns8 opcode;
 	uns8 line;
-	uns8 status;		
+	uns8 status;
 	uns8 line_type;
-	uns8 line_modifier;	
+	uns8 line_modifier;
 	uns8 features;
-	uns8 fw_major;		
-	uns8 fw_minor;      
+	uns8 fw_major;
+	uns8 fw_minor;
 } rsp_line_inquiry;
 #define	req_line_inquiry	req_enable
 

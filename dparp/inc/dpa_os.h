@@ -63,7 +63,7 @@ struct digi_node {
 	uint	nd_chan_count;		/* Number of channels found */
 	uint	nd_tx_byte;		/* Tx data count */
 	uint	nd_rx_byte;		/* RX data count */
-	char	nd_ps_desc[MAX_DESC_LEN]; /* Description from PS */  
+	char	nd_ps_desc[MAX_DESC_LEN]; /* Description from PS */
 };
 
 #define DIGI_GETNODE      ('d'<<8) | 249          /* get board info          */
@@ -85,7 +85,7 @@ struct digi_chan {
 	uint	ch_s_iflag;	/* Realport IFLAG */
 	uint	ch_s_oflag;	/* Realport OFLAG */
 	uint	ch_s_xflag;	/* Realport XFLAG */
-	uint	ch_s_mstat;	/* Realport MLAST */ 
+	uint	ch_s_mstat;	/* Realport MLAST */
 };
 
 #define DIGI_GETCHAN      ('d'<<8) | 248          /* get channel info        */

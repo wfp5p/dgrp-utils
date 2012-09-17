@@ -1,5 +1,5 @@
 /*
- * Copyright 2005 Digi International (www.digi.com)   
+ * Copyright 2005 Digi International (www.digi.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 #include <termios.h>
 
 #ifdef AIX
-# include "digi_panel.h" 
+# include "digi_panel.h"
 #else
 # include <panel.h>
 #endif
@@ -77,7 +77,7 @@ int vanilla = FALSE;
 *
 **********************************************************************/
 
-DigiWin * 
+DigiWin *
 new_digi_win(int y, int x, int starty, int startx)
 {
 	DigiWin *newone = (DigiWin *)malloc(sizeof(DigiWin));
@@ -121,7 +121,7 @@ delete_digi_win(DigiWin *dw)
 *
 **********************************************************************/
 
-void 
+void
 erase_win(DigiWin *dw)
 {
 	int y, x, lines1,  cols;
@@ -142,7 +142,7 @@ erase_win(DigiWin *dw)
 *
 *  Routine Name:	TermDepSetup
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
@@ -156,9 +156,9 @@ TermDepSetup(void)
 	 * tell the user to use keys that are probably not mapped correctly
 	 */
 	if (!strncmp (termtype, "xterm", 5) ||
-		!strncmp (termtype, "vt100", 5) || 
+		!strncmp (termtype, "vt100", 5) ||
 #if 0
-		!strncmp (termtype, "sun", 3) || 
+		!strncmp (termtype, "sun", 3) ||
 #endif
 		!strncmp (termtype, "wy", 2))
 	{
@@ -200,7 +200,7 @@ TermDepSetup(void)
 *
 **********************************************************************/
 
-void 
+void
 StartCurses(void)
 {
 	struct termios tios;
@@ -254,7 +254,7 @@ StartCurses(void)
 *
 **********************************************************************/
 
-void 
+void
 EndCurses(int exitval)
 {
 	if (USE_CURSES)
@@ -274,13 +274,13 @@ EndCurses(int exitval)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-void 
+void
 solidbox(DigiWin *dw)
 {
 	int y, x;
@@ -304,13 +304,13 @@ solidbox(DigiWin *dw)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-void 
+void
 digibox(DigiWin *dw)
 {
 	WINDOW *w = GetWin(dw);
@@ -325,9 +325,9 @@ digibox(DigiWin *dw)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
@@ -356,13 +356,13 @@ mapchar(int acs_char)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-void 
+void
 fillwin(DigiWin *dw, int i)
 {
 	int y, x, lines1, cols;
@@ -381,13 +381,13 @@ fillwin(DigiWin *dw, int i)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-int 
+int
 center(DigiWin *dwin, int str_width)
 {
 	int i;
@@ -405,9 +405,9 @@ center(DigiWin *dwin, int str_width)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
@@ -421,13 +421,13 @@ refresh_screen(void)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-void 
+void
 change_term(int vmin, int vtime)
 {
 	tcgetattr(0, &tbuf);
@@ -441,13 +441,13 @@ change_term(int vmin, int vtime)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-void 
+void
 restore_term(void)
 {
 	tcsetattr(0, TCSADRAIN, &sbuf);

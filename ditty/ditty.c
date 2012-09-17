@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY, EXPRESS OR IMPLIED; without even the 
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+ * but WITHOUT ANY WARRANTY, EXPRESS OR IMPLIED; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -63,7 +63,7 @@ extern char *tgetstr();
 /* ----------------- Begin prototypes ------------------------ */
 int digiset(int, digi_t *);
 int digiget(int, digi_t *);
-void ditty(int); 
+void ditty(int);
 void catch(void);
 
 
@@ -311,7 +311,7 @@ char *dest ;		/* Destination string	*/
  *  Routine to print a string unambiguously             *
  ********************************************************/
 
-stprint(str, len) 
+stprint(str, len)
 char *str ;         /* String to print  */
 int len ;           /* String length    */
 {
@@ -362,7 +362,7 @@ int digiget(int fd, digi_t *digi)
 	return(ioctl(fd, DIGI_GETA, digi)) ;
 }
 
-	
+
 
 /********************************************************
  *	ditty - Perform ditty operations.		*
@@ -475,7 +475,7 @@ void ditty(int fd) /* File descriptor of tty */
 	 *	Set Digiboard parameters.
 	 */
 	if  (   flag0 | flag1
-	    |   digi.digi_maxcps 
+	    |   digi.digi_maxcps
 	    |   digi.digi_maxchar
 	    |   digi.digi_bufsize
 	    |   digi.digi_onlen
@@ -620,7 +620,7 @@ void ditty(int fd) /* File descriptor of tty */
 	 * Set any stty parameters requested.
 	 */
 
-	if (nparm) { 
+	if (nparm) {
 		int pid;
 
 		parm[0] = "stty";
@@ -649,7 +649,7 @@ void ditty(int fd) /* File descriptor of tty */
 		/*
 		 * used to calculate baud rates.
 		 */
-		
+
 		/* --------------------------------------------------------
 		 * It appears that the below call doesn't exist.  We need
 		 * cflags here, either that are a baud rate.  We need to
@@ -723,7 +723,7 @@ void ditty(int fd) /* File descriptor of tty */
 
 		(void) fprintf(outdev, " term ") ;
 		stprint(di.digi_term, (int) strlen(di.digi_term)) ;
-		(void) fprintf(outdev, "\n") ;  
+		(void) fprintf(outdev, "\n") ;
 
 		(void) fprintf(outdev, "maxcps %d maxchar %d bufsize %d ",
 		di.digi_maxcps, di.digi_maxchar, di.digi_bufsize);
@@ -774,7 +774,7 @@ void ditty(int fd) /* File descriptor of tty */
 	/*
 	 * Display modem parameters.
 	 */
-	
+
 	if (print && ioctl(fd, TIOCMGET, &modem) != -1) {
 		if (eol) (void) fprintf(outdev, " ");
 
@@ -983,7 +983,7 @@ int main(int argc, char **argv)
 		}
 
 #ifdef PARA
-		else if ((strcmp(ap, "-p") == 0) || 
+		else if ((strcmp(ap, "-p") == 0) ||
 			 (strcmp(ap, "-parallel") == 0)) {
 			parallel = 1;	/* interpret as parallel port */
 		} else if (strcmp(ap, "output") == 0) {
@@ -1001,13 +1001,13 @@ int main(int argc, char **argv)
 		} else if (strcmp(ap, "reset") == 0) {
 			parallel = 1;
 			preset = 1;
-		} else if ((strcmp(ap, "-OP") == 0) || 
+		} else if ((strcmp(ap, "-OP") == 0) ||
 			   (strcmp(ap, "-op") == 0) ||
 			   (strcmp(ap, "OP-") == 0) ||
 			   (strcmp(ap, "op-") == 0)) {
 			parallel = 1;
 			modem0 |= TIOCM_DTR ;
-		} else if ((strcmp(ap,  "OP") == 0) || 
+		} else if ((strcmp(ap,  "OP") == 0) ||
 			   (strcmp(ap,  "op") == 0) ||
 			   (strcmp(ap, "+OP") == 0) ||
 			   (strcmp(ap, "+op") == 0) ||
@@ -1019,7 +1019,7 @@ int main(int argc, char **argv)
 			   (strcmp(ap, ".8") == 0)) {
 			parallel = 1;
 			pwidth = 13;
-		} else if ((strcmp(ap, "1.0") == 0) || 
+		} else if ((strcmp(ap, "1.0") == 0) ||
 			   (strcmp(ap, "1") == 0)) {
 			parallel = 1;
 			pwidth = 12;
@@ -1041,7 +1041,7 @@ int main(int argc, char **argv)
 			   (strcmp(ap, "4") == 0)) {
 			parallel = 1;
 			pwidth = 7;
-		} else if ((strcmp(ap, "5.0") == 0) || 
+		} else if ((strcmp(ap, "5.0") == 0) ||
 			   (strcmp(ap, "5") == 0)) {
 			parallel = 1;
 			pwidth = 6;
@@ -1070,7 +1070,7 @@ int main(int argc, char **argv)
 			print = 2 ;
 		} else if ((strcmp(ap, "-n") == 0) && (i+1 < argc)) {
 			if (ntty >= MAXTTY) {
-				(void) fprintf(stderr, 
+				(void) fprintf(stderr,
 					       "%s: too many tty devices "
 					       "given!\n", argv[0]) ;
 				exit(2) ;
@@ -1081,7 +1081,7 @@ int main(int argc, char **argv)
 			   (strncmp(ap, "tty", 3) == 0) ||
 			   (strncmp(ap, "cud", 3) == 0)) {
 			if (ntty >= MAXTTY) {
-				(void) fprintf(stderr, 
+				(void) fprintf(stderr,
 					       "%s: too many tty devices "
 					       "given!\n", argv[0]) ;
 				exit(2) ;
@@ -1120,7 +1120,7 @@ int main(int argc, char **argv)
 
 		/* Begin for each tty */
 		for (i = 0 ; i < ntty ; i++) {
-			
+
 			tp = tty[i] ;
 			if (tp[0] != '/') {
 				(void) sprintf(ttname, "/dev/%s", tp) ;
@@ -1148,7 +1148,7 @@ int main(int argc, char **argv)
 				 */
 				newfd = dup(fd);
 
-				/* 
+				/*
 				 * I don't really like the way this works.
 				 * By closing stdin we guarantee that the
 				 * next 'dup'ed file descriptor will be 0
@@ -1166,7 +1166,7 @@ int main(int argc, char **argv)
 				if (newfd < 0) {
 					perror("dup failed ");
 				}
-				
+
 
 				if (print && ntty > 1) {
 					(void) fprintf(outdev,
@@ -1182,4 +1182,3 @@ int main(int argc, char **argv)
 	return(0);
 
 } /* End Main */
-

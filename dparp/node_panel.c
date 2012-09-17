@@ -1,5 +1,5 @@
 /*
- * Copyright 2005 Digi International (www.digi.com)   
+ * Copyright 2005 Digi International (www.digi.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,37 +51,37 @@
 
 /*
  * NAME: read_descriptor
- *      
+ *
  * FUNCTION: Reads a descriptor from the VPD for a device
- *         
+ *
  * EXECUTION ENVIRONMENT:
- *         
+ *
  *  This function is used to decode VPD which is stored in the format
  *  used by the system devices ( CPU's, Planars etc. )
- *          
+ *
  * NOTES:
  *  VPD is stored as a series of descriptors, each of which
  * is encoded as follows:
- * 
+ *
  * Byte 0 = '*'
  * Byte 1,2 = mnemonic      ( E.g. "TM", "Z1", etc )
  * Byte 3 = Total length / 2
  * Byte 4.. = data
- *      
+ *
  *  E.g.:  Byte#     0    1    2    3    4    5    6    7    8    9
  *         Ascii    '*'  'Z'  '1'       '0'  '1'  '2'  '0'  '0'  '1'
  *         Hex       2A   5A   31   05   30   31   32   30   30   31
  *         Oct      052  132  061  005  060  061  062  060  060  061
- *  
+ *
  * RETURNS:
- *          
+ *
  *  A pointer to the static char array "result" is returned, with
  *  the array being empty if the descriptor was not present in the
  *  VPD passed in.
  */
 
 char *read_descriptor(char *vpd, char *name, char *result)
-{       
+{
 	char *res_ptr;
 	int bytecount;
 
@@ -93,7 +93,7 @@ char *read_descriptor(char *vpd, char *name, char *result)
 			/* This is the correct descriptor */
 			bytecount = ((int)vpd[3] << 1 ) - 4;
 
-			vpd += 4;  
+			vpd += 4;
 
 			while( bytecount-- )
 				*res_ptr++ = *vpd++;
@@ -119,7 +119,7 @@ char *read_descriptor(char *vpd, char *name, char *result)
 *
 **********************************************************************/
 
-int 
+int
 print_node(struct deviceinfo *unit)
 {
 	int option = EOF;
@@ -203,15 +203,15 @@ print_node(struct deviceinfo *unit)
 				string);
 
 			read_descriptor(vpd.vpd_data, "PN", string);
-			mvwprintw (nodewin, 16, 2, "Part Number....... : %-53.53s", 
+			mvwprintw (nodewin, 16, 2, "Part Number....... : %-53.53s",
 				string);
 
 			read_descriptor(vpd.vpd_data, "FN", string);
-			mvwprintw (nodewin, 17, 2, "FRU Number........ : %-53.53s", 
+			mvwprintw (nodewin, 17, 2, "FRU Number........ : %-53.53s",
 				string);
 
 			read_descriptor(vpd.vpd_data, "EC", string);
-			mvwprintw (nodewin, 18, 2, "EC Number......... : %-53.53s", 
+			mvwprintw (nodewin, 18, 2, "EC Number......... : %-53.53s",
 				string);
 		}
 
@@ -236,7 +236,7 @@ print_node(struct deviceinfo *unit)
 		{
 			fprintf (stderr, "FATAL ERROR: select failure.\n");
 			EndCurses (-13);
-			/* FIXME: This code will not be executed as 
+			/* FIXME: This code will not be executed as
 			   EndCurses() calls exit(). */
 			exit (-2);
 		}
@@ -249,8 +249,8 @@ print_node(struct deviceinfo *unit)
 		}
 
 		/*
-		 * If the user hasn't selected anything keep doing the 
-		 * original screen. 
+		 * If the user hasn't selected anything keep doing the
+		 * original screen.
 		 */
 
 		switch (option)

@@ -56,7 +56,7 @@ typedef struct {
 } DigiWin;
 
 
-/* 
+/*
  * Global variables.
  */
 
@@ -64,7 +64,7 @@ extern char *propeller[];
 extern int vanilla;       /* When "1", use -, |, and + for boxes and tees */
 
 
-/* 
+/*
  * Prototypes.
  */
 

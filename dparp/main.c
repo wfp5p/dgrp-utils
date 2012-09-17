@@ -1,5 +1,5 @@
 /*
- * Copyright 2005 Digi International (www.digi.com)   
+ * Copyright 2005 Digi International (www.digi.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include <termios.h> 
+#include <termios.h>
 #include <unistd.h>
 
 #include <signal.h>
@@ -66,9 +66,9 @@ CAPTURE_BUFFER tx_capture;
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
@@ -82,13 +82,13 @@ static void usage(void)
 
 /**********************************************************************
 *
-*  Routine Name:	
+*  Routine Name:
 *
-*  Function:	
+*  Function:
 *
 **********************************************************************/
 
-int 
+int
 main (int argc, char **argv)
 {
 	int c;
@@ -162,7 +162,7 @@ main (int argc, char **argv)
 		fprintf (stderr, "Couldn't allocate capture buffers of size %ld\n", (long)rx_capture.buf);
 		exit (1);
 	}
-	
+
 
 	/*
 	 * Call the OS specific way of getting the configuration.

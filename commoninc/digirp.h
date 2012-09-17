@@ -55,7 +55,7 @@ typedef struct digiflow_struct digiflow_t;
 
 
 /************************************************************************
- * Values for digi_flags 
+ * Values for digi_flags
  ************************************************************************/
 #define DIGI_IXON	0x0001		/* Handle IXON in the FEP	*/
 #define DIGI_FAST	0x0002		/* Fast baud rates		*/

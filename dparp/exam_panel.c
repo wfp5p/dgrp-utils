@@ -1,5 +1,5 @@
 /*
- * Copyright 2005 Digi International (www.digi.com)   
+ * Copyright 2005 Digi International (www.digi.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@
 *
 **********************************************************************/
 
-int 
+int
 handle_exam(struct deviceinfo *unit, struct digi_node *node, int port)
 {
 	int i = 0, j = 0, option = EOF;
@@ -115,7 +115,7 @@ handle_exam(struct deviceinfo *unit, struct digi_node *node, int port)
 
 	disp_lines = GetHeight(ExamWin) - (FIRST_DATA + 1);
 
-	
+
 	for (i=0; i < 2; i++)
 	{
 		char tmpbuf[14];
@@ -238,7 +238,7 @@ handle_exam(struct deviceinfo *unit, struct digi_node *node, int port)
 		{
 			fprintf (stderr, "FATAL ERROR: select failure.\n");
 			EndCurses (-13);
-			/* FIXME: This code will not be executed as 
+			/* FIXME: This code will not be executed as
 			   EndCurses() calls exit(). */
 			exit (-2);
 		}
@@ -251,8 +251,8 @@ handle_exam(struct deviceinfo *unit, struct digi_node *node, int port)
 		}
 
 		/*
-		 * If the user hasn't selected anything keep doing the 
-		 * original screen. 
+		 * If the user hasn't selected anything keep doing the
+		 * original screen.
 		 */
 
 		switch (option)

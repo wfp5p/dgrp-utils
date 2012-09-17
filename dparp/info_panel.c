@@ -1,5 +1,5 @@
 /*
- * Copyright 2005 Digi International (www.digi.com)   
+ * Copyright 2005 Digi International (www.digi.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -213,7 +213,7 @@ info_screen (strarray, strarraylen, heading)
 			break;
 
 #ifdef KEY_UP
-		case KEY_UP:  
+		case KEY_UP:
 #endif
 		case 'k':
 		case 'K':

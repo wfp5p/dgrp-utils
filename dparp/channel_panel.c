@@ -61,7 +61,7 @@
 *
 **********************************************************************/
 
-void 
+void
 print_channel(struct deviceinfo *unit)
 {
 	int i = 0, option = EOF, scr_opt = 0;
@@ -83,8 +83,8 @@ print_channel(struct deviceinfo *unit)
 
 	WINDOW *chanwin = GetWin(ChanWin);
 
-	/* 
-	 * scr_opt is just used to determine which field to 
+	/*
+	 * scr_opt is just used to determine which field to
 	 * highlight.
 	 */
 
@@ -370,7 +370,7 @@ print_channel(struct deviceinfo *unit)
 		{
 			fprintf (stderr, "FATAL ERROR: select failure.\n");
 			EndCurses (-13);
-			/* FIXME: This code will not be executed as 
+			/* FIXME: This code will not be executed as
 			   EndCurses() calls exit(). */
 			exit (-2);
 		}
@@ -388,8 +388,8 @@ print_channel(struct deviceinfo *unit)
 		}
 
 		/*
-		 * If the user hasn't selected anything keep doing the 
-		 * original screen. 
+		 * If the user hasn't selected anything keep doing the
+		 * original screen.
 		 */
 
 		switch (option)

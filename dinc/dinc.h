@@ -1,5 +1,5 @@
 /*
- *	dinc.h 
+ *	dinc.h
  *
  */
 
@@ -10,25 +10,25 @@ static char dinchSccsId[] = "@(#) $Id: dinc.h,v 1.13 2005/04/02 03:51:40 scottk 
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
- 
+
 #if defined(HP)
 #include <sys/modem.h>
 #endif
 #if !defined(HP) && !defined(OPENBSD) && !defined(TRU64)
 #include <termio.h>
 #endif
- 
+
 #include <termios.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/time.h>
- 
+
 #if defined(SOLARIS)
 #include <sys/mkdev.h>
 #endif
- 
+
 #if !defined(HP) && !defined(LINUX) && !defined(OPENBSD)
 #include <sys/stream.h>
 #endif
@@ -36,11 +36,11 @@ static char dinchSccsId[] = "@(#) $Id: dinc.h,v 1.13 2005/04/02 03:51:40 scottk 
 #if !defined(HP) && !defined(AIX4) && !defined(LINUX) && !defined(SCO) && !defined(TRU64) && !defined(SCO6)
 #include <sys/ioccom.h>
 #endif
- 
+
 #if !defined(HP) && !defined(LINUX) && !defined(OPENBSD)
 #include <sys/stropts.h>
 #endif
- 
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -58,12 +58,12 @@ static char dinchSccsId[] = "@(#) $Id: dinc.h,v 1.13 2005/04/02 03:51:40 scottk 
 # include <termios.h>
 # include <time.h>
 #endif
- 
+
 
 #if defined(AIX4)
 #include <sys/select.h>
 #endif
- 
+
 /* include CD-specific header file */
 #ifdef  USE_STS_EXT_BAUDS
 # include "cd_ext.h"
@@ -78,11 +78,11 @@ static char dinchSccsId[] = "@(#) $Id: dinc.h,v 1.13 2005/04/02 03:51:40 scottk 
 #ifndef UNKNOWN
 # define		UNKNOWN (2)
 #endif
- 
+
 #ifndef OK
 #define OK                      0
 #endif
- 
+
 #define BSZ                     512
 #define ISZ                     64
 #define UC_IDLE                 0
@@ -103,4 +103,3 @@ void set_hwfc();
 void clr_swfc();
 void clr_hwfc();
 void bail(int code);
-

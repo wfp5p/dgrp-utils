@@ -6,7 +6,7 @@
  *  Authored by James Puzzo, October 2001, though much is borrowed
  *  directly from "cdipserv" and "cdelsreset" in the Central Data
  *  EtherLte software tool kit.
- * 
+ *
  * Copyright (c) 2001-2002 Digi International Inc., All Rights Reserved
  *
  *****************************************************************************/
@@ -59,7 +59,7 @@ void usage_and_exit(char **argv);
 
 
 /*-------------------------------------------------------------------*/
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[])
 {
   struct hostent *ipinfo;        /* IP info about remote host */
   int rp_port = RP_TCP_PORT;     /* the port for RealPort requests */
@@ -73,9 +73,9 @@ int main(int argc, char *argv[])
    */
   for (j=1; j<argc; j++) {
     if (j==(argc-1)) {str_ipaddr=argv[j]; continue;}
-    
+
     /*
-     * -port 
+     * -port
      */
     if (strncmp("-p", argv[j], 2)==0) {
       j++;
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
     }
 
     /*
-     * -rp 
+     * -rp
      */
     if (strncmp("-r", argv[j], 2)==0) {
       if (reset_type != ALL && reset_type != NETCX) {
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
     }
 
     /*
-     * -sts 
+     * -sts
      */
     if (strncmp("-s", argv[j], 2)==0) {
       if (reset_type != ALL && reset_type != FAS) {
@@ -110,8 +110,8 @@ int main(int argc, char *argv[])
     printf("Unrecognized argument: \"%s\"\n\n", argv[j]);
     usage_and_exit(argv);
   } /* looping through argv[] */
- 
- 
+
+
   /*
    * Got enough args?
    */
@@ -119,8 +119,8 @@ int main(int argc, char *argv[])
     printf("Too few arguments.\n\n");
     usage_and_exit(argv);
   }
-  
-  
+
+
   /*
    * Make sure the IP address is kosher.
    */
@@ -130,13 +130,13 @@ int main(int argc, char *argv[])
     herror(argv[0]);
     usage_and_exit(argv);
   }
- 
- 
+
+
   printf("Resetting the EtherLite module...\n");
   if (reset_elmodule(ipinfo,rp_port)<0)
     printf("Remote reset failed.  You will have to manually power cycle "
            "the module.\n");
-  
+
   return(0);  /* That's it! */
 }
 
@@ -158,7 +158,7 @@ int sock_read(int s, caddr_t buf, int wanted);
 void bitmash(unsigned char *challenge, unsigned char *key);
 
 
-int reset_elmodule(struct hostent *ipinfo, int rp_port) 
+int reset_elmodule(struct hostent *ipinfo, int rp_port)
 {
   int s;
   struct sockaddr_in el_addr;
@@ -178,7 +178,7 @@ int reset_elmodule(struct hostent *ipinfo, int rp_port)
     rc = reset_rp_elmodule(ipinfo,rp_port);
     return(rc);
   }
-  
+
   /*
    * Create the socket and the IP connect to the module.
    */
@@ -186,13 +186,13 @@ int reset_elmodule(struct hostent *ipinfo, int rp_port)
     perror("socket");
     return(-1);
   }
-  
+
   memset((char *)&el_addr, 0, sizeof(el_addr));
   memcpy((char *)&el_addr.sin_addr, ipinfo->h_addr, ipinfo->h_length);
 
   el_addr.sin_family = AF_INET;
   el_addr.sin_port = htons(ELS_TCP_PORT);
-  
+
   if (connect(s, (struct sockaddr *)&el_addr, sizeof(el_addr)) < 0) {
     close(s);
 
@@ -203,35 +203,35 @@ int reset_elmodule(struct hostent *ipinfo, int rp_port)
     rc = reset_rp_elmodule(ipinfo,rp_port);
     return(rc);
   }
-  
+
   /*
    * Request a challenge from the ELS.
    */
-  
+
   unlock_req.opcode = FAS_UNIT_UNLOCK;
   if (write(s, &unlock_req, FASCMDSZ) < 0) {
     perror("write");
     close(s);
     return(-1);
   }
-  
+
   if (sock_read(s, (caddr_t)&unlock_rsp, FASCMDSZ) < 0) {
     perror("read");
     close(s);
     return(-1);
   }
-  
+
   if (unlock_rsp.opcode != FAS_UNIT_UNLOCK) {
     printf("Bad unlock response received from EtherLite module.\n");
     close(s);
     return(-1);
   }
-  
+
   /*
    * Do the math that'll prove to the module that we're kosher.
    */
   bitmash(unlock_rsp.challenge,inquiry_req.key);
-  
+
   /*
    * Send back our response.
    */
@@ -241,19 +241,19 @@ int reset_elmodule(struct hostent *ipinfo, int rp_port)
     close(s);
     return (-1);
   }
-  
+
   if (sock_read(s, (caddr_t)&inquiry_rsp, FASCMDSZ) < 0) {
     perror("read");
     close(s);
     return(-1);
   }
-  
+
   if (inquiry_rsp.opcode != FAS_UNIT_INQUIRY) {
     printf("Bad inquiry response received from EtherLite module.\n");
     close(s);
     return(-1);
   }
-  
+
   /* Consume the remainder of the FAS_UNIT_INQUIRY response. */
   if (sock_read(s, (caddr_t)str_inquiry,
 		256*inquiry_rsp.cnt_hi+inquiry_rsp.cnt_lo) < 0) {
@@ -261,7 +261,7 @@ int reset_elmodule(struct hostent *ipinfo, int rp_port)
     close(s);
     return(-1);
   }
-  
+
   /*
    * Done with the challenge.  Now we can issue the reset command.
    */
@@ -271,14 +271,14 @@ int reset_elmodule(struct hostent *ipinfo, int rp_port)
     close(s);
     return(-1);
   }
-  
+
   bzero((char *)&reset_rsp, FASCMDSZ);
   if (sock_read(s, (caddr_t)&reset_rsp, FASCMDSZ) < 0) {
     perror("read");
     close(s);
     return(-1);
   }
-  
+
   if (reset_rsp.opcode != FAS_UNIT_RESET) {
     printf("Bad reset response received from EtherLite module.\n"
 	   "You will need to upgrade the firmware in the module to version 6.0\n"
@@ -287,18 +287,18 @@ int reset_elmodule(struct hostent *ipinfo, int rp_port)
     return(-1);
   }
 
-  printf("Reset complete.\n");  
+  printf("Reset complete.\n");
   close(s);
   return(0);
 }
 
-int reset_rp_elmodule(struct hostent *ipinfo, int rp_port) 
+int reset_rp_elmodule(struct hostent *ipinfo, int rp_port)
 {
   int s;
   struct sockaddr_in el_addr;
   unsigned char pktbuf[1024];
- 
-#if defined(DEBUG) 
+
+#if defined(DEBUG)
   int rlen;
   int i;
   char nums[80];
@@ -325,7 +325,7 @@ int reset_rp_elmodule(struct hostent *ipinfo, int rp_port)
 
   el_addr.sin_family = AF_INET;
   el_addr.sin_port = htons(rp_port);
-  
+
   if (connect(s, (struct sockaddr *)&el_addr, sizeof(el_addr)) < 0) {
     perror("connect");
     close(s);
@@ -417,10 +417,10 @@ int reset_rp_elmodule(struct hostent *ipinfo, int rp_port)
 }
 
 /*------------------------------------------------------------------*/
-int sock_read(int s, caddr_t buf, int wanted) 
+int sock_read(int s, caddr_t buf, int wanted)
 {
   int n;
-  
+
   while (wanted)  {
     if ((n = read(s, buf, wanted)) <= 0) {
       return(-1);
@@ -444,10 +444,10 @@ int sock_read(int s, caddr_t buf, int wanted)
  *  allowed hosts features implemented near the top of this file.
  *
  */
-void bitmash(unsigned char *challenge, unsigned char *key) 
+void bitmash(unsigned char *challenge, unsigned char *key)
 {
   int i, j, k, n, churns;
-  
+
   /* mash the bits together */
   for( i=0, j=1, k=2, churns=0; churns < 31;
        i = (i + 1) % 6, j = (j + i) % 6, k = (k + j) % 6, churns++ ) {
@@ -463,7 +463,7 @@ void bitmash(unsigned char *challenge, unsigned char *key)
   key[0] = challenge[0] + challenge[4];
   key[1] = challenge[2] + challenge[1];
   key[2] = challenge[3] + challenge[5] + challenge[0];
-  
+
   return;
 }
 
@@ -481,9 +481,9 @@ void usage_and_exit(char **argv)
     "    -sts      only attempt to reset by using the protocol\n"
     "              compatible with STS device drivers\n"
     "              (may not be used in conjunction with -rp)\n"
-	 "\n"	
+	 "\n"
 	 "  ip_addr is the IP name or address of the unit to reset.\n"
-	 "\n"	
+	 "\n"
 	 );
   exit(1);
 }

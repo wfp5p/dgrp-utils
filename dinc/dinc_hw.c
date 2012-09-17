@@ -36,7 +36,7 @@ struct termiox tx;
 
 int is_hwfc() {
 	int stat;
-	
+
 	/* fetch current state */
 	stat = ioctl(tty_fd,TCGETX, &tx);
 	if(stat < 0) {
@@ -54,16 +54,16 @@ int is_hwfc() {
  */
 void set_hwfc() {
   int stat;
-  
+
   /* fetch current state */
   stat = ioctl(tty_fd,TCGETX, &tx);
   if(stat < 0) {
     perror("TCGETX failed");
     bail(1);
   }
-  
+
   tx.x_hflag |= (RTSXOFF | CTSXON);
-  
+
   /* set new state */
   stat = ioctl(tty_fd,TCSETX, &tx);
   if(stat < 0) {
@@ -74,21 +74,21 @@ void set_hwfc() {
 
 /*
  *	clr_hwfc()
- *	
+ *
  *	Makes HP-proprietary ioctl to set hardware flow control.
  */
 void clr_hwfc() {
   int stat;
-  
+
   /* fetch current state */
   stat = ioctl(tty_fd,TCGETX, &tx);
   if(stat < 0) {
     perror("TCGETX failed");
     bail(1);
   }
-  
+
   tx.x_hflag &= ~(RTSXOFF | CTSXON);
-  
+
   /* set new state */
   stat = ioctl(tty_fd,TCSETX, &tx);
   if(stat < 0) {
@@ -117,16 +117,16 @@ int set_baud_exten(int exten) {
 #else
   static stsextctl xc;
   int stat;
-  
+
   /* get current state */
   stat = ioctl(tty_fd, STSGETEXTCTL, &xc);
   if(stat < 0) {
     return(!OK);
   }
-  
+
   xc.x_flags &= ~(XC_BAUDEXT | XC_LOOP);
   xc.x_flags |= (exten << XC_BAUDSHIFT);
-  
+
   /* set new state */
   stat = ioctl(tty_fd, STSSETEXTCTL, &xc);
   if(stat < 0) {
@@ -139,7 +139,7 @@ int set_baud_exten(int exten) {
 
 /*
  *	set_modem()
- *	
+ *
  *	Sets modem control state based on 'mdmsigs' global var.
  *	We bail if we fail.
  */
@@ -168,10 +168,10 @@ void set_modem() {
 int get_modem() {
   int mdm;
   static raw_mdm;
-  
+
   if(ioctl(tty_fd, TIOCMGET, &raw_mdm) < 0)
     bail(1);
-  
+
   mdm = 0;
   if(raw_mdm & TIOCM_CAR) mdm |= DINC_CAR;
   if(raw_mdm & TIOCM_DTR) mdm |= DINC_DTR;
@@ -193,7 +193,7 @@ struct termiox tx;
 
 int is_hwfc() {
 	int stat;
-	
+
 	/* fetch current state */
 	stat = ioctl(tty_fd,TCGETX, &tx);
 	if(stat < 0) {
@@ -211,16 +211,16 @@ int is_hwfc() {
  */
 void set_hwfc() {
   int stat;
-  
+
   /* fetch current state */
   stat = ioctl(tty_fd,TCGETX, &tx);
   if(stat < 0) {
     perror("TCGETX failed");
     bail(1);
   }
-  
+
   tx.x_hflag |= (RTSXOFF | CTSXON);
-  
+
   /* set new state */
   stat = ioctl(tty_fd,TCSETX, &tx);
   if(stat < 0) {
@@ -231,21 +231,21 @@ void set_hwfc() {
 
 /*
  *	clr_hwfc()
- *	
+ *
  *	Makes HP-proprietary ioctl to set hardware flow control.
  */
 void clr_hwfc() {
   int stat;
-  
+
   /* fetch current state */
   stat = ioctl(tty_fd,TCGETX, &tx);
   if(stat < 0) {
     perror("TCGETX failed");
     bail(1);
   }
-  
+
   tx.x_hflag &= ~(RTSXOFF | CTSXON);
-  
+
   /* set new state */
   stat = ioctl(tty_fd,TCSETX, &tx);
   if(stat < 0) {
@@ -263,32 +263,32 @@ void clr_hwfc() {
 int set_baud_exten(int exten) {
   static stsextctl xc;
   int stat;
-  
+
   /* attempt to fetch current extended params */
   stat = ioctl(tty_fd,STSGETEXTCTL,&xc);
   if(stat < 0)
     return(!OK);			/* must be another serial driver */
-  
+
   xc.x_flags &= ~XC_BAUDEXT;
   xc.x_flags |= (exten << XC_BAUDSHIFT);
-  
+
   /* set new params */
   stat = ioctl(tty_fd,STSSETEXTCTL,&xc);
   if(stat < 0)
     return(!OK);
-  
+
   return(OK);
 }
 
 /*
  *	set_modem()
- *	
+ *
  *	Sets modem control state based on 'mdmsigs' global var.
  */
 void set_modem() {
   int mdm = 0;
   int stat;
-  
+
   if(mdmsigs & DINC_DTR)
     mdm |= MDTR;
   if(mdmsigs & DINC_RTS)
@@ -310,7 +310,7 @@ void set_modem() {
 int get_modem() {
   int stat;
   int raw_mdm,mdm;
-  
+
   stat = ioctl(tty_fd, MCGETA, &raw_mdm);
   if(stat < 0) {
     perror("show_modem: MCGETA failed");
@@ -362,7 +362,7 @@ int set_baud_exten(int exten) {
 int set_baud_exten(int exten) {
   static struct strioctl strreq;
   static stsextctl xc;
-  
+
   /* get current state */
   strreq.ic_cmd    = STSGETEXTCTL;
   strreq.ic_timout = 0;
@@ -372,10 +372,10 @@ int set_baud_exten(int exten) {
     printf("GETEXTCTL failed\n");
     return(!OK);
   }
-  
+
   xc.x_flags &= ~XC_BAUDEXT;
   xc.x_flags |= (exten << XC_BAUDSHIFT);
-  
+
   /* set new state */
   strreq.ic_cmd    = STSSETEXTCTL;
   strreq.ic_timout = 0;
@@ -404,12 +404,12 @@ int set_baud_exten(int exten) {
 void set_modem() {
   int mdm;
   int stat;
-  
+
   /* same story as Linux? -rpr */
   if(ioctl(tty_fd, TIOCMGET, &mdm) < 0)
     bail(1);
   mdm &= ~(TIOCM_DTR|TIOCM_RTS);
- 
+
   /** the bits to set **/
 
   if(mdmsigs & DINC_DTR)
@@ -436,7 +436,7 @@ void set_modem() {
 int get_modem() {
   int stat,mdm;
   static int raw_mdm;
-  
+
   stat = ioctl(tty_fd, TIOCMGET, &raw_mdm);
   if(stat < 0) {
     perror("get_modem failed");
@@ -467,7 +467,7 @@ void set_hwfc() {  }
 
 /*
  *	clr_hwfc()
- *	
+ *
  *	Makes proprietary ioctl to set hardware flow control.
  */
 void clr_hwfc() {  }
@@ -484,7 +484,7 @@ int set_baud_exten(int exten) {
 
 /*
  *	set_modem()
- *	
+ *
  *	Sets modem control state based on 'mdmsigs' global var.
  *      We now get the current bitset and modify it for Linux's native ports.
  */
@@ -515,7 +515,7 @@ void set_modem() {
 int get_modem() {
   int stat;
   int raw_mdm,mdm;
-  
+
   stat = ioctl(tty_fd, TIOCMGET, &raw_mdm);
   if(stat < 0) {
     perror("show_modem: TIOCMGET failed");
@@ -530,4 +530,3 @@ int get_modem() {
   return(mdm);
 }
 #endif /* AIX4 */
-

@@ -1,5 +1,5 @@
 /*
- * Copyright 2005 Digi International (www.digi.com)   
+ * Copyright 2005 Digi International (www.digi.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ tty_open(char *name, struct termios *sv_tios)
         int ret;
 	int fd;
         struct termios tios;
-        
+
 	if (access (name, F_OK) || (fd = open(name, O_RDWR | O_NONBLOCK) ) < 0) {
 		return -1;
 	}
@@ -75,7 +75,7 @@ tty_open(char *name, struct termios *sv_tios)
 		close(fd);
 		return -1;
 	}
-        
+
 	*sv_tios = tios;        /* Save a copy so we can restore settings later */
 
 	/* default values */
@@ -127,10 +127,10 @@ test_send(char *test_data, int len, int fd)
 /**********************************************************************
 *
 *  Routine Name:        neo_test_recv
-*               
+*
 *  Function:    Receive test data on the specified port with normal
 *               system reads
-*  
+*
 **********************************************************************/
 int
 test_recv(char *dt, int mx_ln, int wt_sec, int fd)
@@ -167,7 +167,7 @@ test_recv(char *dt, int mx_ln, int wt_sec, int fd)
 *
 **********************************************************************/
 
-void 
+void
 handle_loopback (struct deviceinfo *unit, struct digi_node *node, struct digi_chan *chan, int port)
 {
 	char full_line[81];
@@ -316,7 +316,7 @@ handle_loopback (struct deviceinfo *unit, struct digi_node *node, struct digi_ch
                 {
                         mvwprintw (lbwin, r++, 2,
                                 "***** Loop Back Failure=%d Receiving %d bytes.", i, TBUFSIZ);
-                        wrefresh (lbwin);  
+                        wrefresh (lbwin);
                         tty_close (rwfd, &sv_tios);
                         test_cases++;
 			goto user_input;
