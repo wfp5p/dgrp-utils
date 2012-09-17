@@ -216,9 +216,7 @@ long fbaud( int baud )
  *  Routine to expand curses definitions.		*
  ********************************************************/
 
-getcode(dest, src)
-char *src ;	    /* Source string	*/
-char *dest ;		/* Destination string	*/
+int getcode(char *dest, char *src)
 {
     register char *sp = src ;
     register char *dp = dest ;
@@ -311,9 +309,7 @@ char *dest ;		/* Destination string	*/
  *  Routine to print a string unambiguously             *
  ********************************************************/
 
-stprint(str, len)
-char *str ;         /* String to print  */
-int len ;           /* String length    */
+void stprint(char *str, int len)
 {
 	while (--len >= 0) {
 	if (*str <= 0x20 || *str >= 0x7f) {

@@ -166,7 +166,7 @@ char* tempString(char* str)
  * Gets the error string associated with Errno.
  ************************************************************************/
 
-char* errorString()
+char *errorString(void)
 {
     static char buf[30];
 
@@ -892,7 +892,7 @@ int seed_prng(int bytes)
  * from the TCP connection to the Network Device.
  ************************************************************************/
 
-void copyData()
+void copyData(void)
 {
     int n;
     ssize_t rcount;
@@ -1360,7 +1360,7 @@ void copyData()
  * Connects to the remote server.
  ************************************************************************/
 
-void mainLoop()
+void mainLoop(void)
 {
     int one = 1;
     struct hostent *hp;

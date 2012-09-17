@@ -57,11 +57,7 @@
 *
 **********************************************************************/
 
-void
-info_screen (strarray, strarraylen, heading)
-	char *strarray[];
-	int strarraylen;
-	char *heading;
+void info_screen (char *strarray[], int strarraylen, char *heading)
 {
 	DigiWin *DHelpWin;
 	WINDOW  *HelpWin;

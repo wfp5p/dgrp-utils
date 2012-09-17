@@ -431,7 +431,8 @@ int main(int argc, char **argv) {
 /*
  *	loop()
  */
-void loop() {
+void loop(void)
+{
 	struct timeval	 tv;
 	fd_set			 rfdv, wfdv;
 	int				 stat;
@@ -596,7 +597,8 @@ int move(char *dst, char *src, int n, int add_cr, int add_lf, int strip_cr, int 
  *	Mostly just echo thru to t_out buf, but watch for special
  *	command sequences.
  */
-void proc_user_input() {
+void proc_user_input(void)
+{
 	int c;
 
 	/* make sure we have something to do */
@@ -808,7 +810,7 @@ void tout_putc(int c) {
  *
  *	Exits on failure.
  */
-void open_tty() {
+void open_tty(void) {
 	/* set signal handler for open watchdog */
 	signal(SIGALRM, tty_open_timeout);
 
@@ -852,7 +854,8 @@ void tty_open_timeout(int arg) {
  *	from accessing the same port.  Simply exits if errors encountered
  *	or if port is busy.
  */
-void lock_tty() {
+void lock_tty(void)
+{
 #if defined(NO_UULOCKING)
 	return;
 #else
@@ -964,7 +967,8 @@ void lock_tty() {
  *	Simply removes our lock file if we've made one (and not already
  *	removed it).
  */
-void unlock_tty() {
+void unlock_tty(void)
+{
 	if(lock_file[0] != 0) {
 		unlink(lock_file);
 		lock_file[0] = 0;
@@ -1018,7 +1022,8 @@ int read_lock_proc_id(char *name) {
  *	Attempts to create a temp file with our process ID in it.
  *	Exits if error encountered.
  */
-void create_tmp_proc_id() {
+void create_tmp_proc_id(void)
+{
 	char	 proc_id[12];
 	int		 tmp_fd;
 
@@ -1051,7 +1056,8 @@ void create_tmp_proc_id() {
  *	we fail doing normal setup, print error and exit.  If all goes
  *	well, return OK.
  */
-int set_tty_params() {
+int set_tty_params(void)
+{
 	int		 stat,i;
 	int		 code,ext;
 
@@ -1171,7 +1177,8 @@ int set_tty_params() {
 /*
  *	show_tty_params()
  */
-void show_tty_params() {
+void show_tty_params(void)
+{
 	static char		*parnames[3] = {"NONE","ODD ","EVEN"};
 	char			 tbuf[80];
 
@@ -1282,7 +1289,8 @@ int next_baud(int dir) {
  *
  *	Fetch current user terminal params and stash 'em away.
  */
-void save_user_params() {
+void save_user_params(void)
+{
 	int stat;
 
 	stat = tcgetattr(STDOUT_FILENO,&user_save_termios);
@@ -1298,7 +1306,7 @@ void save_user_params() {
  *
  *	Set raw mode at user terminal.
  */
-void set_user_params() {
+void set_user_params(void) {
 	int stat;
 
 	stat = tcgetattr(STDOUT_FILENO,&user_termios);
@@ -1327,7 +1335,8 @@ void set_user_params() {
  *
  *	Put original user terminal params back in effect.
  */
-void restore_user_params() {
+void restore_user_params(void)
+{
 	int stat;
 
 	stat = tcsetattr(STDOUT_FILENO, TCSANOW, &user_save_termios);
@@ -1343,7 +1352,8 @@ void restore_user_params() {
  *
  *	Fetches and prints state of modem signals.
  */
-void show_modem() {
+void show_modem(void)
+{
 	int			 m;
 	char		 tbuf[160];
 	static int	 initd;
@@ -1391,7 +1401,8 @@ void show_modem() {
  *
  *	Also the sign_on banner.
  */
-void show_info() {
+void show_info(void)
+{
 	char	 tbuf[80];
 	char 	*dashes = "----------------------------------------";
 	int		 dcnt;
@@ -1416,7 +1427,7 @@ void show_info() {
 /*
  *	sign_on()
  */
-void sign_on()
+void sign_on(void)
 {
 	show_info();
 	write_string(STDOUT_FILENO,"Type ~? for help.\n\r");
@@ -1476,7 +1487,8 @@ void bail(int code) {
 /*
  *	usage()
  */
-void usage() {
+void usage(void)
+{
 	printf("usage: dinc [[-125678ENOhsiecrlfCRLF] [[baudrate]] [port]\n");
 	printf("  -1           one stop bit\n");
 	printf("  -2           two stop bits\n");

@@ -98,9 +98,20 @@ void clr_hwfc() {
 }
 #else
 
-  int is_hwfc() { return(tty_termios.c_cflag &CRTSCTS); }
-  void set_hwfc() { tty_termios.c_cflag |= CRTSCTS; }
-  void clr_hwfc() { tty_termios.c_cflag &= ~CRTSCTS; }
+int is_hwfc(void)
+{
+	return(tty_termios.c_cflag &CRTSCTS);
+}
+
+void set_hwfc(void)
+{
+	tty_termios.c_cflag |= CRTSCTS;
+}
+
+void clr_hwfc(void)
+{
+	tty_termios.c_cflag &= ~CRTSCTS;
+}
 #endif
 
 
@@ -143,7 +154,8 @@ int set_baud_exten(int exten) {
  *	Sets modem control state based on 'mdmsigs' global var.
  *	We bail if we fail.
  */
-void set_modem() {
+void set_modem(void)
+{
   int mdm;
 
   if(ioctl(tty_fd, TIOCMGET, &mdm) < 0)
@@ -165,7 +177,8 @@ void set_modem() {
  *	DINC_xxx modem indications.
  *	We bail if we fail.
  */
-int get_modem() {
+int get_modem(void)
+{
   int mdm;
   static raw_mdm;
 
