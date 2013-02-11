@@ -58,8 +58,6 @@ build:
 	(cd config; make all)
 	(cd dgipserv; make -f Makefile.linux all)
 	(cd dgelreset; make -f Makefile.linux all)
-	(cd dinc; make LINUX)
-	(cd dparp; make linux)
 
 clean:
 	(cd ditty; make clean)
@@ -67,8 +65,6 @@ clean:
 	(cd config; make clean)
 	(cd dgipserv; make -f Makefile.linux clean)
 	(cd dgelreset; make -f Makefile.linux clean)
-	(cd dinc; make clean)
-	(cd dparp; make clobber)
 
 distclean:  clean
 	rm -f config.cache config.log config.status
@@ -86,11 +82,6 @@ install:
 	(cd init;   make install)
 	(cd dgipserv; make -f Makefile.linux install)
 	(cd dgelreset; make -f Makefile.linux install) 
-
-# Copy dinc and dparp into correct position
-	install -d $(RPM_BUILD_ROOT)/usr/bin
-	install -m 0755 dinc/dinc $(RPM_BUILD_ROOT)/usr/bin/dinc.dgrp
-	install -m 0755 dparp/dparp $(RPM_BUILD_ROOT)/usr/bin/dpa.dgrp
 
 # Copy postinstall and preuninstall scripts into correct location for RPM.
 	install -d $(DGRPCONFIG)
@@ -127,7 +118,5 @@ uninstall:
 	(cd dgipserv; make -f Makefile.linux uninstall)
 	(cd dgelreset; make -f Makefile.linux uninstall)
 	-rm -r $(DGRPBIN)
-	-rm -r $(RPM_BUILD_ROOT)/usr/bin/dinc.dgrp
-	-rm -r $(RPM_BUILD_ROOT)/usr/bin/dpa.dgrp
 
 
