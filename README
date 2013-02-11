@@ -2,3 +2,6 @@ Digi Realport user space code originally from
 ftp://ftp1.digi.com/support/beta/linux/dgrp/dgrp-1.9.tgz
 
 The original Digi README is in README.orig
+
+Running  autoconf -f, ./configure, and make should build the user space
+daemons.
